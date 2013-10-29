@@ -1533,7 +1533,7 @@ imageOutput <- function(outputId, width = "100%", height="400px") {
 #' )
 #' @export
 plotOutput <- function(outputId, width = "100%", height="400px",
-                       clickId = NULL, hoverId = NULL, hoverDelay = 300,
+                       clickId = NULL, releaseId = NULL, hoverId = NULL, hoverDelay = 300,
                        hoverDelayType = c("debounce", "throttle")) {
   if (is.null(clickId) && is.null(hoverId)) {
     hoverDelay <- NULL
@@ -1546,6 +1546,7 @@ plotOutput <- function(outputId, width = "100%", height="400px",
     "height:", validateCssUnit(height))
   div(id = outputId, class = "shiny-plot-output", style = style,
       `data-click-id` = clickId,
+      `data-release-id` = releaseId,
       `data-hover-id` = hoverId,
       `data-hover-delay` = hoverDelay,
       `data-hover-delay-type` = hoverDelayType)

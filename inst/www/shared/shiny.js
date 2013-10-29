@@ -1050,10 +1050,11 @@
       var $el = $(el);
       // Load the image before emptying, to minimize flicker
       var img = null;
-      var clickId, hoverId;
+      var clickId, releaseId, hoverId;
       
       if (data) {
         clickId = $el.data('click-id');
+        releaseId = $el.data('release-id');
         hoverId = $el.data('hover-id');
         
         $el.data('coordmap', data.coordmap);
@@ -1063,6 +1064,7 @@
         // Copy items from data to img. This should include 'src'
         $.each(data, function(key, value) {
           img[key] = value;
+          if (releaseId) img['draggable'] = false;
         });
 
         // Firefox doesn't have offsetX/Y, so we need to use an alternate
@@ -1138,7 +1140,14 @@
             $el.data('hover-func')(null);
           });
         }
-
+        if (releaseId) {
+          $(img).on({
+            'mousedown': function() {
+              Shiny.onInputChange(releaseId, null);
+            },
+            'mouseup': createMouseHandler(releaseId)
+          });
+        }
         if (clickId || hoverId) {
           $(img).addClass('crosshair');
         }
