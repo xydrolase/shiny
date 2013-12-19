@@ -918,14 +918,17 @@ coerceToFunc <- function(x) {
 #' }
 #'   
 #' @export
-reactivePoll <- function(intervalMillis, session, checkFunc, valueFunc) {
+reactivePoll <- function(intervalMillis, session, checkFunc, valueFunc, checkTry = FALSE) {
   intervalMillis <- coerceToFunc(intervalMillis)
   
   rv <- reactiveValues(cookie = isolate(checkFunc()))
   
   observe({
-    rv$cookie <- checkFunc()
-    invalidateLater(intervalMillis(), session)
+    check <- if (checkTry) try(checkFunc()) else checkFunc()
+    if (!inherits(check, 'try-error')) {
+      rv$cookie <- check
+      invalidateLater(intervalMillis(), session)
+    }
   })
   
   # TODO: what to use for a label?
