@@ -37,7 +37,7 @@
     else if (window.getComputedStyle) {
       // getComputedStyle can return null when we're inside a hidden iframe on
       // Firefox; don't attempt to retrieve style props in this case.
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=548397 
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=548397
       var style = document.defaultView.getComputedStyle(el, null);
       if (style)
         x = style.getPropertyValue(styleProp);
